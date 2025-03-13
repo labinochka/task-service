@@ -1,0 +1,4 @@
+rootProject.name = 'TaskService'
+include 'task-service-api'
+include 'task-service-db'
+include 'task-service-impl'
