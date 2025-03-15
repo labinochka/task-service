@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: DDL/20250315-init-db.yml
+      relativeToChangelogFile: true
+

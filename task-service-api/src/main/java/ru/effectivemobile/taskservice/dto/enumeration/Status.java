@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum Status {
-    FOR_EXECUTION("К выполнению"),
-    IN_DEVELOPMENT("В разработке"),
-    REVIEW("Ревью"),
-    READY_FOR_TESTING("Готово к тестированию"),
-    IN_TESTING("В тестировании"),
-    DONE("Готово");
+    FOR_EXECUTION("Рљ РІС‹РїРѕР»РЅРµРЅРёСЋ"),
+    IN_DEVELOPMENT("Р’ СЂР°Р·СЂР°Р±РѕС‚РєРµ"),
+    REVIEW("Р РµРІСЊСЋ"),
+    READY_FOR_TESTING("Р“РѕС‚РѕРІРѕ Рє С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЋ"),
+    IN_TESTING("Р’ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРё"),
+    DONE("Р“РѕС‚РѕРІРѕ");
 
     private final String value;
 

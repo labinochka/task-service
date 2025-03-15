@@ -1,1 +1,12 @@
-spring.application.name=task-service-impl
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:5432}/${PG_DB_NAME:task_service_db}
+    username: ${PG_USERNAME:postgres}
+    password: ${PG_PASSWORD:password}
+
+  liquibase:
+    change-log: classpath:db/changelog-master.yml
+
+  application:
+    name: task-service
