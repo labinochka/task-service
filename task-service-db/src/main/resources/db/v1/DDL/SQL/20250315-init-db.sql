@@ -1,4 +1,4 @@
--- Создание таблицы user
+-- РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ user
 CREATE TABLE client
 (
     id       UUID PRIMARY KEY,
@@ -8,7 +8,7 @@ CREATE TABLE client
     CONSTRAINT user_role_enum_check CHECK (role IN ('ADMIN', 'USER'))
 );
 
--- Создание таблицы task
+-- РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ task
 CREATE TABLE task
 (
     id          UUID PRIMARY KEY,
@@ -27,7 +27,7 @@ CREATE TABLE task
     CONSTRAINT task_priority_enum_check CHECK (priority IN ('LOW', 'MEDIUM', 'HIGH'))
 );
 
--- Создание таблицы comment
+-- РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ comment
 CREATE TABLE comment
 (
     id         UUID PRIMARY KEY,
