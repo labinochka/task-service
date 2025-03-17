@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import ru.effectivemobile.taskservice.dto.enumeration.Priority;
 import ru.effectivemobile.taskservice.dto.enumeration.Status;
 import ru.effectivemobile.taskservice.dto.request.TaskRequest;
+import ru.effectivemobile.taskservice.dto.response.ShortTaskResponse;
 import ru.effectivemobile.taskservice.dto.response.TaskResponse;
 import ru.effectivemobile.taskservice.security.userdetails.CustomUserDetails;
 
@@ -14,10 +15,10 @@ public interface TaskService {
 
     TaskResponse create(TaskRequest request);
 
-    TaskResponse getById(UUID id);
+    TaskResponse getById(UUID id, int commentPage, int commentSize);
 
-    Page<TaskResponse> getAll(List<Status> status, List<Priority> priority, List<UUID> authorId, List<UUID> executorId,
-                              String search, boolean isEarlyFirst, int page, int size);
+    Page<ShortTaskResponse> getAll(List<Status> status, List<Priority> priority, List<UUID> authorId, List<UUID> executorId,
+                                   String search, boolean isEarlyFirst, int page, int size);
 
     TaskResponse update(UUID id, TaskRequest request);
 

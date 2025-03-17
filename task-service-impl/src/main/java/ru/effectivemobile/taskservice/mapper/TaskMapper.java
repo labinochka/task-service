@@ -3,6 +3,7 @@ package ru.effectivemobile.taskservice.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.effectivemobile.taskservice.dto.request.TaskRequest;
+import ru.effectivemobile.taskservice.dto.response.ShortTaskResponse;
 import ru.effectivemobile.taskservice.dto.response.TaskResponse;
 import ru.effectivemobile.taskservice.entity.TaskEntity;
 
@@ -17,5 +18,5 @@ public interface TaskMapper {
 
     TaskResponse toResponse(TaskEntity entity);
 
-    List<TaskResponse> toResponse (List<TaskEntity> entities);
+    List<ShortTaskResponse> toResponse (List<TaskEntity> entities);
 }

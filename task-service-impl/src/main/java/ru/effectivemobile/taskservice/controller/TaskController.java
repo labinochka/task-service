@@ -10,6 +10,7 @@ import ru.effectivemobile.taskservice.dto.enumeration.Status;
 import ru.effectivemobile.taskservice.dto.request.CommentRequest;
 import ru.effectivemobile.taskservice.dto.request.TaskRequest;
 import ru.effectivemobile.taskservice.dto.response.CommentResponse;
+import ru.effectivemobile.taskservice.dto.response.ShortTaskResponse;
 import ru.effectivemobile.taskservice.dto.response.TaskResponse;
 import ru.effectivemobile.taskservice.service.CommentService;
 import ru.effectivemobile.taskservice.service.TaskService;
@@ -33,13 +34,13 @@ public class TaskController implements TaskApi {
     }
 
     @Override
-    public TaskResponse getById(UUID id) {
-        return taskService.getById(id);
+    public TaskResponse getById(UUID id, int commentPage, int commentSize) {
+        return taskService.getById(id, commentPage, commentSize);
     }
 
     @Override
-    public Page<TaskResponse> getAll(List<Status> status, List<Priority> priority, List<UUID> authorId,
-                                     List<UUID> executorId, String search, boolean isEarlyFirst, int page, int size) {
+    public Page<ShortTaskResponse> getAll(List<Status> status, List<Priority> priority, List<UUID> authorId,
+                                          List<UUID> executorId, String search, boolean isEarlyFirst, int page, int size) {
         return taskService.getAll(status, priority, authorId, executorId, search, isEarlyFirst, page, size);
     }
 

@@ -11,11 +11,15 @@ import ru.effectivemobile.taskservice.dto.enumeration.Priority;
 import ru.effectivemobile.taskservice.dto.enumeration.Role;
 import ru.effectivemobile.taskservice.dto.enumeration.Status;
 import ru.effectivemobile.taskservice.dto.request.TaskRequest;
+import ru.effectivemobile.taskservice.dto.response.CommentResponse;
+import ru.effectivemobile.taskservice.dto.response.ShortTaskResponse;
 import ru.effectivemobile.taskservice.dto.response.TaskResponse;
+import ru.effectivemobile.taskservice.entity.CommentEntity;
 import ru.effectivemobile.taskservice.entity.TaskEntity;
 import ru.effectivemobile.taskservice.entity.UserEntity;
 import ru.effectivemobile.taskservice.exception.model.AccessForbiddenException;
 import ru.effectivemobile.taskservice.exception.model.TaskNotFoundException;
+import ru.effectivemobile.taskservice.mapper.CommentMapper;
 import ru.effectivemobile.taskservice.mapper.TaskMapper;
 import ru.effectivemobile.taskservice.repository.TaskRepository;
 import ru.effectivemobile.taskservice.repository.UserRepository;
@@ -33,6 +37,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
 
     private final TaskMapper taskMapper;
+    private final CommentMapper commentMapper;
 
     @Override
     public TaskResponse create(TaskRequest request) {
@@ -42,16 +47,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponse getById(UUID id) {
-        return taskMapper.toResponse(
-                taskRepository.findById(id)
-                        .orElseThrow(() -> new TaskNotFoundException(id))
-        );
+    public TaskResponse getById(UUID id, int commentPage, int commentSize) {
+        TaskEntity task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        TaskResponse taskResponse = taskMapper.toResponse(task);
+
+        Pageable pageable = PageRequest.of(commentPage, commentSize);
+        List<CommentEntity> comments = task.getComments();
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), comments.size());
+        List<CommentResponse> commentResponses = commentMapper.toResponse(comments.subList(start, end));
+
+        taskResponse.setComments(new PageImpl<>(commentResponses, pageable, comments.size()));
+        return taskResponse;
     }
 
     @Override
-    public Page<TaskResponse> getAll(List<Status> status, List<Priority> priority, List<UUID> authorId,
-                                     List<UUID> executorId, String search, boolean isEarlyFirst, int page, int size) {
+    public Page<ShortTaskResponse> getAll(List<Status> status, List<Priority> priority, List<UUID> authorId,
+                                          List<UUID> executorId, String search, boolean isEarlyFirst, int page, int size) {
         List<TaskEntity> result;
 
         if (isEarlyFirst) {
@@ -66,7 +80,7 @@ public class TaskServiceImpl implements TaskService {
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), result.size());
 
-        List<TaskResponse> paginatedTasks = taskMapper.toResponse(result.subList(start, end));
+        List<ShortTaskResponse> paginatedTasks = taskMapper.toResponse(result.subList(start, end));
 
         return new PageImpl<>(paginatedTasks, pageable, result.size());
     }

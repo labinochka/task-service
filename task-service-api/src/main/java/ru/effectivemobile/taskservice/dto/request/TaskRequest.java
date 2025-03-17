@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ru.effectivemobile.taskservice.dto.enumeration.Priority;
 import ru.effectivemobile.taskservice.dto.enumeration.Status;
+import ru.effectivemobile.taskservice.validate.annotation.ValidEnum;
 
 import java.util.UUID;
 
@@ -18,9 +19,11 @@ public record TaskRequest(
         String description,
 
         @NotNull(message = "Статус не может быть пустым")
+        @ValidEnum(enumClass = Status.class, message = "Недопустимый статус")
         Status status,
 
         @NotNull(message = "Приоритет не может быть пустым")
+        @ValidEnum(enumClass = Priority.class, message = "Недопустимый приоритет")
         Priority priority,
 
         @NotNull(message = "Автор не может быть пустым")

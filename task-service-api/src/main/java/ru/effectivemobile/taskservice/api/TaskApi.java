@@ -23,6 +23,7 @@ import ru.effectivemobile.taskservice.dto.enumeration.Status;
 import ru.effectivemobile.taskservice.dto.request.CommentRequest;
 import ru.effectivemobile.taskservice.dto.request.TaskRequest;
 import ru.effectivemobile.taskservice.dto.response.CommentResponse;
+import ru.effectivemobile.taskservice.dto.response.ShortTaskResponse;
 import ru.effectivemobile.taskservice.dto.response.TaskResponse;
 
 import java.util.List;
@@ -53,21 +54,23 @@ public interface TaskApi {
             @ApiResponse(responseCode = "200", description = "Задача получена")
     })
     @GetMapping("/{id}")
-    TaskResponse getById(@PathVariable UUID id);
+    TaskResponse getById(@PathVariable UUID id,
+                         @RequestParam(defaultValue = "0") int commentPage,
+                         @RequestParam(defaultValue = "10") int commentSize);
 
     @Operation(summary = "Получение задач c пагинацией")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Задачи получены")
     })
     @GetMapping
-    Page<TaskResponse> getAll(@RequestParam(value = "status", required = false) List<Status> status,
-                              @RequestParam(value = "priority", required = false) List<Priority> priority,
-                              @RequestParam(value = "authorId", required = false) List<UUID> authorId,
-                              @RequestParam(value = "executorId", required = false) List<UUID> executorId,
-                              @RequestParam(value = "search", required = false) String search,
-                              @RequestParam(value = "isEarlyFirst", defaultValue = "false") boolean isEarlyFirst,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "10") int size);
+    Page<ShortTaskResponse> getAll(@RequestParam(value = "status", required = false) List<Status> status,
+                                   @RequestParam(value = "priority", required = false) List<Priority> priority,
+                                   @RequestParam(value = "authorId", required = false) List<UUID> authorId,
+                                   @RequestParam(value = "executorId", required = false) List<UUID> executorId,
+                                   @RequestParam(value = "search", required = false) String search,
+                                   @RequestParam(value = "isEarlyFirst", defaultValue = "false") boolean isEarlyFirst,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size);
 
     @Operation(summary = "Обновление задачи")
     @ApiResponses(value = {
