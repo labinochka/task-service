@@ -7,4 +7,6 @@ import java.util.UUID;
 public interface UserService {
 
     CustomUserDetails getCurrentUser();
+
+    UUID getCurrentUserId();
 }

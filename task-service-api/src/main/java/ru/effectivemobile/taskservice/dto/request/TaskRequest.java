@@ -15,7 +15,6 @@ public record TaskRequest(
         @Size(min = 2, max = 100, message = "Название не может превышать 100 символов")
         String title,
 
-        @NotBlank(message = "Описание не может быть пустым")
         String description,
 
         @NotNull(message = "Статус не может быть пустым")
@@ -25,9 +24,6 @@ public record TaskRequest(
         @NotNull(message = "Приоритет не может быть пустым")
         @ValidEnum(enumClass = Priority.class, message = "Недопустимый приоритет")
         Priority priority,
-
-        @NotNull(message = "Автор не может быть пустым")
-        UUID authorId,
 
         @NotNull(message = "Исполнитель не может быть пустым")
         UUID executorId

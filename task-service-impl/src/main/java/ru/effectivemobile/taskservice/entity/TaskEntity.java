@@ -55,7 +55,7 @@ public class TaskEntity {
     @Column(nullable = false)
     private UUID authorId;
 
-    @Column
+    @Column(nullable = false)
     private UUID executorId;
 
     @Column(nullable = false, updatable = false)

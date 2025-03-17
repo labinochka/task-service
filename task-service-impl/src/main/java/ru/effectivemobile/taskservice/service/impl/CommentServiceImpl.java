@@ -15,6 +15,7 @@ import ru.effectivemobile.taskservice.repository.CommentRepository;
 import ru.effectivemobile.taskservice.repository.TaskRepository;
 import ru.effectivemobile.taskservice.security.userdetails.CustomUserDetails;
 import ru.effectivemobile.taskservice.service.CommentService;
+import ru.effectivemobile.taskservice.service.UserService;
 
 import java.util.UUID;
 
@@ -27,6 +28,8 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentMapper commentMapper;
 
+    private final UserService userService;
+
     @Override
     public CommentResponse createComment(UUID taskId, CommentRequest request, CustomUserDetails user) {
         TaskEntity task = taskRepository.findById(taskId)
@@ -35,6 +38,7 @@ public class CommentServiceImpl implements CommentService {
         if (user.getId().equals(task.getExecutorId()) || user.getRole().equals(Role.ADMIN)) {
             CommentEntity comment = commentMapper.toEntity(request);
             comment.setTask(task);
+            comment.setAuthorId(userService.getCurrentUserId());
 
             return commentMapper.toResponse(
                     commentRepository.save(comment)

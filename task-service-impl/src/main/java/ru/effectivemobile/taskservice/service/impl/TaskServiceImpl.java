@@ -22,6 +22,7 @@ import ru.effectivemobile.taskservice.repository.TaskRepository;
 import ru.effectivemobile.taskservice.repository.UserRepository;
 import ru.effectivemobile.taskservice.security.userdetails.CustomUserDetails;
 import ru.effectivemobile.taskservice.service.TaskService;
+import ru.effectivemobile.taskservice.service.UserService;
 
 import java.util.Comparator;
 import java.util.List;
@@ -35,10 +36,14 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskMapper taskMapper;
 
+    private final UserService userService;
+
     @Override
     public TaskResponse create(TaskRequest request) {
+        TaskEntity task = taskMapper.toEntity(request);
+        task.setAuthorId(userService.getCurrentUserId());
         return taskMapper.toResponse(
-                taskRepository.save(taskMapper.toEntity(request))
+                taskRepository.save(task)
         );
     }
 

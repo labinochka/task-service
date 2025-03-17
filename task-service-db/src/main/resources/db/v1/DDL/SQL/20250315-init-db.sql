@@ -16,7 +16,7 @@ CREATE TABLE refresh_token
 (
     id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     refresh_token VARCHAR     NOT NULL,
-    client_id       UUID        NOT NULL,
+    client_id     UUID        NOT NULL,
     expired_at    TIMESTAMPTZ NOT NULL,
 
     CONSTRAINT fk_token_client FOREIGN KEY (client_id) REFERENCES client (id)
@@ -31,7 +31,7 @@ CREATE TABLE task
     status      VARCHAR(50)  NOT NULL,
     priority    VARCHAR(50)  NOT NULL,
     author_id   UUID         NOT NULL,
-    executor_id UUID,
+    executor_id UUID         NOT NULL,
     created_at  TIMESTAMPTZ  NOT NULL,
     updated_at  TIMESTAMPTZ,
     CONSTRAINT fk_task_author FOREIGN KEY (author_id) REFERENCES client (id),
