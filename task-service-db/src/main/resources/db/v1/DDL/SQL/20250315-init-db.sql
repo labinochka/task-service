@@ -16,8 +16,10 @@ CREATE TABLE refresh_token
 (
     id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     refresh_token VARCHAR     NOT NULL,
-    user_id       UUID        NOT NULL,
-    expired_at    TIMESTAMPTZ NOT NULL
+    client_id       UUID        NOT NULL,
+    expired_at    TIMESTAMPTZ NOT NULL,
+
+    CONSTRAINT fk_token_client FOREIGN KEY (client_id) REFERENCES client (id)
 );
 
 -- Создание таблицы task

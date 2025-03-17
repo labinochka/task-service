@@ -1,11 +1,11 @@
 package ru.effectivemobile.taskservice.service;
 
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 import ru.effectivemobile.taskservice.dto.enumeration.Priority;
 import ru.effectivemobile.taskservice.dto.enumeration.Status;
 import ru.effectivemobile.taskservice.dto.request.TaskRequest;
 import ru.effectivemobile.taskservice.dto.response.TaskResponse;
+import ru.effectivemobile.taskservice.security.userdetails.CustomUserDetails;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,5 +23,5 @@ public interface TaskService {
 
     void delete(UUID id);
 
-    TaskResponse updateStatus(UUID taskId, Status status);
+    TaskResponse updateStatus(UUID taskId, Status status, CustomUserDetails user);
 }

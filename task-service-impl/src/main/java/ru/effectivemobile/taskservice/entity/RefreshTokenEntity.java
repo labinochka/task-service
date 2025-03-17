@@ -37,7 +37,7 @@ public class RefreshTokenEntity {
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private UserEntity user;
 
     @Column(nullable = false)
