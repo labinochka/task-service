@@ -34,8 +34,8 @@ public class TaskController implements TaskApi {
     }
 
     @Override
-    public TaskResponse getById(UUID id, int commentPage, int commentSize) {
-        return taskService.getById(id, commentPage, commentSize);
+    public TaskResponse getById(UUID id) {
+        return taskService.getById(id);
     }
 
     @Override

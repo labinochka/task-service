@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
         }
         UserEntity user = userRepository.findById(UUID.fromString(id)).orElseThrow(UserNotFoundException::new);
         RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new MismatchedTokenException("Неверный refresh токен"));
+                .orElseThrow(() -> new MismatchedTokenException("РќРµРІРµСЂРЅС‹Р№ refresh С‚РѕРєРµРЅ"));
         TokensResponse tokens = jwtTokenUtils.createTokens(id, user.getRole().name());
         refreshTokenEntity.setRefreshToken(tokens.refreshToken());
         refreshTokenEntity.setExpiredAt(tokens.refreshTokenExpiresAt());

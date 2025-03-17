@@ -54,9 +54,7 @@ public interface TaskApi {
             @ApiResponse(responseCode = "200", description = "Задача получена")
     })
     @GetMapping("/{id}")
-    TaskResponse getById(@PathVariable UUID id,
-                         @RequestParam(defaultValue = "0") int commentPage,
-                         @RequestParam(defaultValue = "10") int commentSize);
+    TaskResponse getById(@PathVariable UUID id);
 
     @Operation(summary = "Получение задач c пагинацией")
     @ApiResponses(value = {

@@ -15,7 +15,7 @@ public interface TaskService {
 
     TaskResponse create(TaskRequest request);
 
-    TaskResponse getById(UUID id, int commentPage, int commentSize);
+    TaskResponse getById(UUID id);
 
     Page<ShortTaskResponse> getAll(List<Status> status, List<Priority> priority, List<UUID> authorId, List<UUID> executorId,
                                    String search, boolean isEarlyFirst, int page, int size);
