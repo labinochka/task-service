@@ -45,6 +45,11 @@ public class TaskController implements TaskApi {
     }
 
     @Override
+    public TaskResponse updateStatus(UUID taskId, Status status) {
+        return taskService.updateStatus(taskId, status);
+    }
+
+    @Override
     public void delete(UUID id) {
         taskService.delete(id);
     }

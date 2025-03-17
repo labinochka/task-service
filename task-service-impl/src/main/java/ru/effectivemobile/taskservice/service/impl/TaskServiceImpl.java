@@ -72,10 +72,12 @@ public class TaskServiceImpl implements TaskService {
 
         TaskEntity newTask = taskMapper.toEntity(request);
         newTask.setId(oldTask.getId());
+        newTask.setComments(oldTask.getComments());
+        newTask.setCreatedAt(oldTask.getCreatedAt());
 
-        return taskMapper.toResponse(
-                taskRepository.save(newTask)
-        );
+        TaskEntity task = taskRepository.save(newTask);
+
+        return taskMapper.toResponse(task);
     }
 
     @Override
@@ -83,5 +85,15 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
         taskRepository.delete(task);
+    }
+
+    @Override
+    public TaskResponse updateStatus(UUID taskId, Status status) {
+        TaskEntity task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        task.setStatus(status);
+        return taskMapper.toResponse(
+                taskRepository.save(task)
+        );
     }
 }

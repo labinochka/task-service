@@ -44,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
         CommentEntity newComment = commentMapper.toEntity(request);
         newComment.setId(oldComment.getId());
+        newComment.setTask(oldComment.getTask());
 
         return commentMapper.toResponse(
                 commentRepository.save(newComment)

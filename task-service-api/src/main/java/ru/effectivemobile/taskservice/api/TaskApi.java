@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.w3c.dom.stylesheets.LinkStyle;
 import ru.effectivemobile.taskservice.dto.enumeration.Priority;
 import ru.effectivemobile.taskservice.dto.enumeration.Status;
 import ru.effectivemobile.taskservice.dto.request.CommentRequest;
@@ -74,6 +73,13 @@ public interface TaskApi {
     })
     @PutMapping("/{id}")
     TaskResponse update(@PathVariable("id") UUID id, @RequestBody @Valid TaskRequest request);
+
+    @Operation(summary = "Обновление статуса задачи")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Статус обновлен")
+    })
+    @PutMapping("/{taskId}/status")
+    TaskResponse updateStatus(@PathVariable("taskId") UUID taskId, @RequestParam(value = "status") Status status);
 
     @Operation(summary = "Удаление задачи по id")
     @ApiResponses(value = {

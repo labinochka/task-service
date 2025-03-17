@@ -1,7 +1,10 @@
+create
+    extension if not exists "uuid-ossp";
+
 -- Создание таблицы user
 CREATE TABLE client
 (
-    id       UUID PRIMARY KEY,
+    id       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email    VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role     VARCHAR(50)  NOT NULL,
@@ -11,7 +14,7 @@ CREATE TABLE client
 -- Создание таблицы task
 CREATE TABLE task
 (
-    id          UUID PRIMARY KEY,
+    id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title       VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     status      VARCHAR(50)  NOT NULL,
@@ -30,7 +33,7 @@ CREATE TABLE task
 -- Создание таблицы comment
 CREATE TABLE comment
 (
-    id         UUID PRIMARY KEY,
+    id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     comment    VARCHAR(255) NOT NULL,
     task_id    UUID         NOT NULL,
     author_id  UUID         NOT NULL,

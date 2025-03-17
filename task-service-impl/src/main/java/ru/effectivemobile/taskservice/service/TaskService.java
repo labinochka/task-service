@@ -22,4 +22,6 @@ public interface TaskService {
     TaskResponse update(UUID id, TaskRequest request);
 
     void delete(UUID id);
+
+    TaskResponse updateStatus(UUID taskId, Status status);
 }
