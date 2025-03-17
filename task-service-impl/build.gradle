@@ -6,7 +6,7 @@ apply {
 ext {
     testcontainersVersion = "1.19.8"
     mapstructVersion = "1.5.5.Final"
-    springCloudVersion = "2023.0.2"
+    javaJwtVersion = "4.4.0"
 }
 
 dependencies {
@@ -16,7 +16,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation "com.auth0:java-jwt:${javaJwtVersion}"
 
     implementation 'org.liquibase:liquibase-core'
 

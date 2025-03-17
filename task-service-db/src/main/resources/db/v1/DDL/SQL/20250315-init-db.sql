@@ -11,6 +11,15 @@ CREATE TABLE client
     CONSTRAINT user_role_enum_check CHECK (role IN ('ADMIN', 'USER'))
 );
 
+-- Создание таблицы refresh token
+CREATE TABLE refresh_token
+(
+    id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    refresh_token VARCHAR     NOT NULL,
+    user_id       UUID        NOT NULL,
+    expired_at    TIMESTAMPTZ NOT NULL
+);
+
 -- Создание таблицы task
 CREATE TABLE task
 (

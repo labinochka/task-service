@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
+import ru.effectivemobile.taskservice.dto.enumeration.Role;
 
-import java.util.List;
 import java.util.UUID;
 
 @Table(name = "client")
@@ -24,14 +24,14 @@ public class UserEntity {
     @UuidGenerator
     private UUID id;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
-//    @Column(name = "role", nullable = false)
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
 

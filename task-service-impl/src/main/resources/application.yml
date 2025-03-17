@@ -10,3 +10,14 @@ spring:
 
   application:
     name: task-service
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY:key}
+  expired:
+    access-time: ${JWT_EXPIRED_ACCESS_TIME:3600000}
+    refresh-time: ${JWT_EXPIRED_REFRESH_TIME:15724800000}
+
+cron:
+  refresh-token:
+    clear: 0 0 0 * * ?
