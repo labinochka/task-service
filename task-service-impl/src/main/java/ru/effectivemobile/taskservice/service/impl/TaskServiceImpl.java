@@ -87,7 +87,6 @@ public class TaskServiceImpl implements TaskService {
         newTask.setId(oldTask.getId());
         newTask.setAuthorId(oldTask.getAuthorId());
         newTask.setComments(oldTask.getComments());
-        newTask.setCreatedAt(oldTask.getCreatedAt());
 
         TaskEntity task = taskRepository.save(newTask);
 

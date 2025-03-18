@@ -2,4 +2,8 @@ databaseChangeLog:
   - include:
       file: DDL/20250315-init-db.yml
       relativeToChangelogFile: true
+  - include:
+      file: DML/20250318-add-admin.yml
+      relativeToChangelogFile: true
+
 

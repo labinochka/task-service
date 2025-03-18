@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: '2'
+      author: labinochka
+      changes:
+        - sqlFile:
+            path: SQL/20250318-add-admin.sql
+            relativeToChangelogFile: true
