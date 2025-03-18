@@ -38,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenUtils jwtTokenUtils;
 
     @Override
+    @Transactional
     public TokensResponse signIn(AuthRequest request) {
         String email = request.email();
         UserEntity user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
@@ -53,6 +54,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public TokensResponse refreshTokens(String refreshToken) {
         String id;
         try {
@@ -71,6 +73,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public AuthResponse register(AuthRequest request) {
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new UserAlreadyExistException(request.email());

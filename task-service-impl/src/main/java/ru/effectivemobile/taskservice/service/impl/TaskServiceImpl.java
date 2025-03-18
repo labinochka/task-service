@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.effectivemobile.taskservice.dto.enumeration.Priority;
 import ru.effectivemobile.taskservice.dto.enumeration.Role;
 import ru.effectivemobile.taskservice.dto.enumeration.Status;
@@ -14,12 +14,10 @@ import ru.effectivemobile.taskservice.dto.request.TaskRequest;
 import ru.effectivemobile.taskservice.dto.response.ShortTaskResponse;
 import ru.effectivemobile.taskservice.dto.response.TaskResponse;
 import ru.effectivemobile.taskservice.entity.TaskEntity;
-import ru.effectivemobile.taskservice.entity.UserEntity;
 import ru.effectivemobile.taskservice.exception.model.AccessForbiddenException;
 import ru.effectivemobile.taskservice.exception.model.TaskNotFoundException;
 import ru.effectivemobile.taskservice.mapper.TaskMapper;
 import ru.effectivemobile.taskservice.repository.TaskRepository;
-import ru.effectivemobile.taskservice.repository.UserRepository;
 import ru.effectivemobile.taskservice.security.userdetails.CustomUserDetails;
 import ru.effectivemobile.taskservice.service.TaskService;
 import ru.effectivemobile.taskservice.service.UserService;
@@ -39,6 +37,7 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
 
     @Override
+    @Transactional
     public TaskResponse create(TaskRequest request) {
         TaskEntity task = taskMapper.toEntity(request);
         task.setAuthorId(userService.getCurrentUserId());
@@ -48,6 +47,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TaskResponse getById(UUID id) {
         return taskMapper.toResponse(
                 taskRepository.findById(id)
@@ -78,12 +78,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskResponse update(UUID id, TaskRequest request) {
         TaskEntity oldTask = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
         TaskEntity newTask = taskMapper.toEntity(request);
         newTask.setId(oldTask.getId());
+        newTask.setAuthorId(oldTask.getAuthorId());
         newTask.setComments(oldTask.getComments());
         newTask.setCreatedAt(oldTask.getCreatedAt());
 
@@ -93,6 +95,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
         TaskEntity task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
@@ -100,6 +103,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskResponse updateStatus(UUID taskId, Status status, CustomUserDetails user) {
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));

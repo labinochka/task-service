@@ -2,6 +2,7 @@ package ru.effectivemobile.taskservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.effectivemobile.taskservice.dto.enumeration.Role;
 import ru.effectivemobile.taskservice.dto.request.CommentRequest;
 import ru.effectivemobile.taskservice.dto.response.CommentResponse;
@@ -31,6 +32,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserService userService;
 
     @Override
+    @Transactional
     public CommentResponse createComment(UUID taskId, CommentRequest request, CustomUserDetails user) {
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));
@@ -48,6 +50,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public CommentResponse updateComment(UUID id, CommentRequest request, CustomUserDetails user) {
         CommentEntity oldComment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException(id));
@@ -56,6 +59,7 @@ public class CommentServiceImpl implements CommentService {
             CommentEntity newComment = commentMapper.toEntity(request);
             newComment.setId(oldComment.getId());
             newComment.setTask(oldComment.getTask());
+            newComment.setAuthorId(oldComment.getAuthorId());
 
             return commentMapper.toResponse(
                     commentRepository.save(newComment)
@@ -65,13 +69,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void deleteComment(UUID id, CustomUserDetails user) {
         CommentEntity oldComment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException(id));
 
         if (user.getId().equals(oldComment.getAuthorId()) || user.getRole().equals(Role.ADMIN)) {
             commentRepository.delete(oldComment);
+        } else {
+            throw new AccessForbiddenException();
         }
-        throw new AccessForbiddenException();
     }
 }
