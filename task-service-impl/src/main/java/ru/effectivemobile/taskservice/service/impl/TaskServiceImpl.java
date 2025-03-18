@@ -1,6 +1,7 @@
 package ru.effectivemobile.taskservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
@@ -41,9 +43,11 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponse create(TaskRequest request) {
         TaskEntity task = taskMapper.toEntity(request);
         task.setAuthorId(userService.getCurrentUserId());
-        return taskMapper.toResponse(
-                taskRepository.save(task)
-        );
+
+        TaskEntity savedTask = taskRepository.saveAndFlush(task);
+
+        return taskMapper.toResponse(savedTask);
+
     }
 
     @Override
@@ -80,17 +84,18 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskResponse update(UUID id, TaskRequest request) {
-        TaskEntity oldTask = taskRepository.findById(id)
+        TaskEntity task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
-        TaskEntity newTask = taskMapper.toEntity(request);
-        newTask.setId(oldTask.getId());
-        newTask.setAuthorId(oldTask.getAuthorId());
-        newTask.setComments(oldTask.getComments());
+        task.setTitle(request.title());
+        task.setDescription(request.description());
+        task.setStatus(request.status());
+        task.setPriority(request.priority());
+        task.setExecutorId(request.executorId());
 
-        TaskEntity task = taskRepository.save(newTask);
-
-        return taskMapper.toResponse(task);
+        return taskMapper.toResponse(
+                taskRepository.save(task)
+        );
     }
 
     @Override

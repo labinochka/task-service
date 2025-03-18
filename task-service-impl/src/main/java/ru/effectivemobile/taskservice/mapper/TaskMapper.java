@@ -20,5 +20,5 @@ public interface TaskMapper {
 
     ShortTaskResponse toShortResponse(TaskEntity entity);
 
-    List<ShortTaskResponse> toResponse (List<TaskEntity> entities);
+    List<ShortTaskResponse> toResponse(List<TaskEntity> entities);
 }

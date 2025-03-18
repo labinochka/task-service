@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
             comment.setAuthorId(userService.getCurrentUserId());
 
             return commentMapper.toResponse(
-                    commentRepository.save(comment)
+                    commentRepository.saveAndFlush(comment)
             );
         }
         throw new AccessForbiddenException();
@@ -52,17 +52,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentResponse updateComment(UUID id, CommentRequest request, CustomUserDetails user) {
-        CommentEntity oldComment = commentRepository.findById(id)
+        CommentEntity comment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException(id));
 
-        if (user.getId().equals(oldComment.getAuthorId())) {
-            CommentEntity newComment = commentMapper.toEntity(request);
-            newComment.setId(oldComment.getId());
-            newComment.setTask(oldComment.getTask());
-            newComment.setAuthorId(oldComment.getAuthorId());
+        if (user.getId().equals(comment.getAuthorId())) {
+            comment.setComment(request.comment());
 
             return commentMapper.toResponse(
-                    commentRepository.save(newComment)
+                    commentRepository.save(comment)
             );
         }
         throw new AccessForbiddenException();
@@ -71,11 +68,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void deleteComment(UUID id, CustomUserDetails user) {
-        CommentEntity oldComment = commentRepository.findById(id)
+        CommentEntity comment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException(id));
 
-        if (user.getId().equals(oldComment.getAuthorId()) || user.getRole().equals(Role.ADMIN)) {
-            commentRepository.delete(oldComment);
+        if (user.getId().equals(comment.getAuthorId()) || user.getRole().equals(Role.ADMIN)) {
+            commentRepository.delete(comment);
         } else {
             throw new AccessForbiddenException();
         }
